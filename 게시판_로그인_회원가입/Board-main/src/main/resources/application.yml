@@ -1,0 +1,23 @@
+#server -> default 8080
+server:
+  port: 8080
+
+# database link
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/board_db?useSSL=false&serverTimezone=Asia/Seoul
+    username: lhe
+    password: 1234
+
+# mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  config-location: classpath:mybatis-config.xml
+
+# debug
+logging:
+  level:
+    root: info
+    org.mybatis: debug
+    org.springframework.jdbc: debug

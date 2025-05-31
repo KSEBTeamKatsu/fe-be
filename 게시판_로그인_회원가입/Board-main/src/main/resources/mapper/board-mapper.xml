@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Katsu.Katsu_spring.repository.BoardRepository">
+    <insert id="save" parameterType="Katsu.Katsu_spring.dto.BoardDTO">
+        insert into board_table(title, content) values(#{title}, #{content})
+    </insert>
+    <select id="findAll" resultType="Katsu.Katsu_spring.dto.BoardDTO">
+        select postId, title, userId, date_format(createdAt, "%Y-%m-%d") as createdAt, viewCnt, likes from board_table order by postId desc
+    </select>
+    <update id="updateView" parameterType="long">
+        update board_table set viewCnt = viewCnt+1 where postId = #{value}
+    </update>
+    <select id="findById" parameterType="long" resultType="Katsu.Katsu_spring.dto.BoardDTO">
+        select postId, title, userId, content, date_format(createdAt, "%Y-%m-%d") as createdAt, viewCnt, likes from board_table where postId=#{value}
+    </select>
+    <update id="update" parameterType="Katsu.Katsu_spring.dto.BoardDTO">
+        update board_table set title=#{title}, content=#{content} where postId=#{postId}
+    </update>
+    <delete id="delete" parameterType="Long">
+        delete from board_table where postId=#{postId}
+    </delete>
+</mapper>
