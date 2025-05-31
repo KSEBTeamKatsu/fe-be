@@ -5,14 +5,18 @@ import Katsu.Katsu_spring.repository.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service  // 🔥 핵심: @Service로 등록해야 스프링 빈이 됨
+@Service  // @Service로 등록해야 스프링 빈이 됨
 public class UserServiceImpl implements UserService {
 
+    private final UserMapper userMapper;
+
     @Autowired
-    private UserMapper userMapper;
+    public UserServiceImpl(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     @Override
-    public UserDTO findById(long id) {
+    public UserDTO findById(String id) {
         return userMapper.findById(id);
     }
 }

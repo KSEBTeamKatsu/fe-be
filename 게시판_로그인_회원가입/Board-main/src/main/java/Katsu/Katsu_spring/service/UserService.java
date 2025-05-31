@@ -4,5 +4,5 @@ import Katsu.Katsu_spring.dto.UserDTO;
 
 public interface UserService {
 
-    UserDTO findById(long id);
+    UserDTO findById(String id);
 }

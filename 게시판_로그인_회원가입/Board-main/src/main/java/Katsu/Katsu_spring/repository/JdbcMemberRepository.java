@@ -23,7 +23,7 @@ public class JdbcMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Member findById(Long id) {
+    public Member findById(String id) {
         String sql = "SELECT * FROM member_table WHERE id = ?";
         List<Member> result = jdbcTemplate.query(sql, memberRowMapper(), id);
         return result.stream().findAny().orElse(null);
@@ -32,7 +32,7 @@ public class JdbcMemberRepository implements MemberRepository {
     private RowMapper<Member> memberRowMapper() {
         return (rs, rowNum) -> {
             Member member = new Member();
-            member.setId(rs.getLong("id"));
+            member.setId(rs.getString("id"));
             member.setPassword(rs.getString("pw"));
             return member;
         };

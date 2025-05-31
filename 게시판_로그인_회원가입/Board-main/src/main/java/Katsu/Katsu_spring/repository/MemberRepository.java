@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository {
     void save(Member member);                 // 회원 저장
-    Member findById(Long id);              // 아이디로 회원 찾기
+    Member findById(String id);              // 아이디로 회원 찾기
 }

@@ -17,7 +17,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // CSRF 보호 끔 (폼 테스트용일 때)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/posts", "/css/**").permitAll() // 여기서 /posts 허용!
+                        .requestMatchers("/", "/login", "/posts", "/css/**", "/api/login").permitAll() // 여기서 /posts 허용!
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
