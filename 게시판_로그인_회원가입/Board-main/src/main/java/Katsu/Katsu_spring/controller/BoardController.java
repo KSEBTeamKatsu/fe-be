@@ -26,7 +26,7 @@ public class BoardController {
     @PostMapping("/posts")
     public String posts(BoardDTO boardDTO) {
         boardService.posts(boardDTO);
-        return "redirect:/list"; //글을 작성하면 리다이렉션이 되지 않았었다. 반환타입을 String으로 바꾸고 /list url로 리다이렉션을 해준다.
+        return "redirect:/list"; //반환타입을 String으로 바꾸고 /list url로 리다이렉션을 해준다.
         //글작성이 성공하면 localhost:8080/list로 페이지가 넘어간다.
     }
 

@@ -4,6 +4,6 @@
 <configuration>
     <typeAliases>
         <typeAlias type="Katsu.Katsu_spring.dto.BoardDTO" alias="board"/>
-        <typeAlias type="Katsu.Katsu_spring.dto.UserDTO" alias="UserDTO"/>
+        <typeAlias type="Katsu.Katsu_spring.dto.MemberDTO" alias="UserDTO"/>
     </typeAliases>
 </configuration>

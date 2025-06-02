@@ -11,11 +11,11 @@ public class Member {
 
     public Member() {}
 
-    public Member(String id, String password) {
+    public Member(String id, String pw) {
         this.id = id;
-        this.pw = password;
+        this.pw = pw;
     }
 
     public String getPassword() { return pw; }
-    public void setPassword(String password) { this.pw = password; }
+    public void setPassword(String pw) { this.pw = pw; }
 }

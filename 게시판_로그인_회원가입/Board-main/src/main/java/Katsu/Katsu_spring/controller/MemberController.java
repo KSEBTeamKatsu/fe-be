@@ -3,6 +3,7 @@ package Katsu.Katsu_spring.controller;
 import Katsu.Katsu_spring.domain.Member;
 import Katsu.Katsu_spring.repository.JdbcMemberRepository;
 import Katsu.Katsu_spring.service.MemberService;
+import Katsu.Katsu_spring.token.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,19 +13,22 @@ import Katsu.Katsu_spring.repository.MemberRepository;
 
 import javax.sql.DataSource;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
-@RequestMapping("/members")
 public class MemberController {
 
     private final MemberService memberService;
 
     @Autowired
-    public MemberController(DataSource dataSource) {
-        JdbcMemberRepository repository = new JdbcMemberRepository(dataSource);
-        this.memberService = new MemberService((MemberRepository) repository);
+    public MemberController(MemberService memberService) {
+        //JdbcMemberRepository repository = new JdbcMemberRepository(memberService);
+        this.memberService = memberService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public String signup(@RequestBody Member member) {
         try {
             memberService.join(member);
@@ -35,19 +39,24 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody Member member, HttpSession session) {
+    public Map<String, String> login(@RequestBody Member member) {
         Member found = memberService.findMember(member.getId());
+        Map<String, String> response = new HashMap<>();
 
         if (found == null) {
-            return "존재하지 않는 아이디입니다.";
+            response.put("message", "존재하지 않는 아이디입니다.");
+            return response;
         }
 
         if (!found.getPassword().equals(member.getPassword())) {
-            return "비밀번호가 일치하지 않습니다.";
+            response.put("message", "비밀번호가 일치하지 않습니다.");
+            return response;
         }
 
-        // 로그인 성공 → 세션에 회원 정보 저장
-        session.setAttribute("loginMember", found);
-        return "로그인 성공!";
+        // ✅ JWT 생성
+        String token = JwtUtil.generateToken(found.getId());
+        response.put("token", token);
+        response.put("message", "로그인 성공");
+        return response;
     }
 }
