@@ -16,7 +16,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping
+@RequestMapping("/api")
 public class BoardController {
     private final BoardService boardService;
 

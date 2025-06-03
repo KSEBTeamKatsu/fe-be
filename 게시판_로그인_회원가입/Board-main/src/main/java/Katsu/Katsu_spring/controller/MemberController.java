@@ -1,19 +1,14 @@
 package Katsu.Katsu_spring.controller;
 
 import Katsu.Katsu_spring.domain.Member;
-import Katsu.Katsu_spring.repository.JdbcMemberRepository;
 import Katsu.Katsu_spring.service.MemberService;
-import Katsu.Katsu_spring.token.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import Katsu.Katsu_spring.repository.MemberRepository;
 
-import javax.sql.DataSource;
 import jakarta.servlet.http.HttpSession;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -21,12 +16,10 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
-    private final JwtUtil jwtUtil;
 
     @Autowired
-    public MemberController(MemberService memberService, JwtUtil jwtUtil) {
+    public MemberController(MemberService memberService) {
         this.memberService = memberService;
-        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/register")
@@ -41,21 +34,23 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Member member, HttpSession session) {
+        System.out.println("받은 ID: "+member.getId());
+        System.out.println("받은 PW: "+member.getPw());
         Member found = memberService.findMember(member.getId());
         // 아이디/비밀번호 검증
         if (found != null && found.getPw().equals(member.getPw())) {
             // 세션 등 처리
             session.setAttribute("user", member.getId());
-
-            // 토큰 발급 예시
-            String token = jwtUtil.generateToken(member.getId());
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok("로그인 성공");
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","로그인 실패"));
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.invalidate();
+        return ResponseEntity.ok("로그아웃 성공");
     }
 
 }
