@@ -21,4 +21,4 @@ logging:
     root: debug
     org.mybatis: debug
     org.springframework.web: debug
-    org.springframework.jdbc: debug
+#    org.springframework.jdbc: debug

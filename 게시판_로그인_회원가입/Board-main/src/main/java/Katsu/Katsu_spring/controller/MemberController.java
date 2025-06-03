@@ -5,10 +5,9 @@ import Katsu.Katsu_spring.repository.JdbcMemberRepository;
 import Katsu.Katsu_spring.service.MemberService;
 import Katsu.Katsu_spring.token.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import Katsu.Katsu_spring.repository.MemberRepository;
 
 import javax.sql.DataSource;
@@ -18,14 +17,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api")
 public class MemberController {
 
     private final MemberService memberService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public MemberController(MemberService memberService) {
-        //JdbcMemberRepository repository = new JdbcMemberRepository(memberService);
+    public MemberController(MemberService memberService, JwtUtil jwtUtil) {
         this.memberService = memberService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/register")
@@ -39,24 +40,22 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Member member) {
+    public ResponseEntity<?> login(@RequestBody Member member, HttpSession session) {
         Member found = memberService.findMember(member.getId());
-        Map<String, String> response = new HashMap<>();
+        // 아이디/비밀번호 검증
+        if (found != null && found.getPw().equals(member.getPw())) {
+            // 세션 등 처리
+            session.setAttribute("user", member.getId());
 
-        if (found == null) {
-            response.put("message", "존재하지 않는 아이디입니다.");
-            return response;
+            // 토큰 발급 예시
+            String token = jwtUtil.generateToken(member.getId());
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","로그인 실패"));
         }
-
-        if (!found.getPassword().equals(member.getPassword())) {
-            response.put("message", "비밀번호가 일치하지 않습니다.");
-            return response;
-        }
-
-        // ✅ JWT 생성
-        String token = JwtUtil.generateToken(found.getId());
-        response.put("token", token);
-        response.put("message", "로그인 성공");
-        return response;
     }
+
 }

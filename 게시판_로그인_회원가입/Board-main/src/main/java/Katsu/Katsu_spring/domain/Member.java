@@ -3,9 +3,9 @@ package Katsu.Katsu_spring.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+@Setter
+@Getter
 public class Member {
-    @Setter
-    @Getter
     private String id;        // 아이디 (번호)
     private String pw;  // 비밀번호
 
