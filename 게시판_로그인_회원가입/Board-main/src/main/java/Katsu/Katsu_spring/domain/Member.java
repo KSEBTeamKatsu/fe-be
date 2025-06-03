@@ -16,6 +16,4 @@ public class Member {
         this.pw = pw;
     }
 
-    public String getPassword() { return pw; }
-    public void setPassword(String pw) { this.pw = pw; }
 }

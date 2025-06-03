@@ -5,8 +5,10 @@
 
     <!-- ID로 회원 조회 -->
     <select id="findById" resultType="Katsu.Katsu_spring.domain.Member">
-        SELECT * FROM member_table
-        WHERE id = #{id}
+        SELECT * FROM member_table WHERE id = #{id}
     </select>
+    <insert id="save" parameterType="Katsu.Katsu_spring.domain.Member">
+        INSERT INTO member_table (id, pw) VALUES (#{id}, #{pw})
+    </insert>
 
 </mapper>
