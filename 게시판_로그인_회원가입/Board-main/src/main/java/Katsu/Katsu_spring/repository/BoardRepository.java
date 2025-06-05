@@ -10,27 +10,15 @@ import java.util.List;
 @Mapper
 public interface BoardRepository {
 
-    public void posts(BoardDTO boardDTO) {
-        boardRepository.posts(boardDTO);
-    }
+    void posts(BoardDTO boardDTO);
 
-    public List<BoardDTO> findAll(){
-        return boardRepository.findAll();
-    }
+    List<BoardDTO> findAll();
 
-    public void updateView(Long postId){
-        boardRepository.updateView(postId);
-    }
+    void updateView(Long postId);
 
-    public BoardDTO findById(Long postId){
-        return boardRepository.findById(postId);
-    }
+    BoardDTO findById(Long postId);
 
-    public void update(BoardDTO boardDTO){
-        boardRepository.update(boardDTO);
-    }
+    void update(BoardDTO boardDTO);
 
-    public void delete(long postId){
-        boardRepository.delete(postId);
-    }         // 아이디로 회원 찾기
+    void delete(long postId);
 }
