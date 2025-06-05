@@ -1,42 +1,36 @@
 package Katsu.Katsu_spring.repository;
 
 import Katsu.Katsu_spring.dto.BoardDTO;
-import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
-import org.mybatis.spring.SqlSessionTemplate;
 
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
-public class BoardRepository {
-    private final SqlSessionTemplate sql;
+@Mapper
+public interface BoardRepository {
 
     public void posts(BoardDTO boardDTO) {
-        sql.insert("Katsu.Katsu_spring.repository.BoardRepository.posts", boardDTO);
+        boardRepository.posts(boardDTO);
     }
 
     public List<BoardDTO> findAll(){
-        System.out.println("findAll");
-        return sql.selectList("Katsu.Katsu_spring.repository.BoardRepository.findAll");
+        return boardRepository.findAll();
     }
 
-    public void updateView(@Param("postId") Long postId){
-        System.out.println("updateView");
-        sql.update("Katsu.Katsu_spring.repository.BoardRepository.updateView", postId);
+    public void updateView(Long postId){
+        boardRepository.updateView(postId);
     }
 
-    public BoardDTO findById(@Param("postId") Long postId){
-        System.out.println("findById");
-        return sql.selectOne("Katsu.Katsu_spring.repository.BoardRepository.findById", postId);
+    public BoardDTO findById(Long postId){
+        return boardRepository.findById(postId);
     }
 
     public void update(BoardDTO boardDTO){
-        sql.update("Katsu.Katsu_spring.repository.BoardRepository.update", boardDTO);
+        boardRepository.update(boardDTO);
     }
 
-    public void delete(Long postId){
-        sql.delete("Katsu.Katsu_spring.repository.BoardRepository.delete", postId);
-    }
+    public void delete(long postId){
+        boardRepository.delete(postId);
+    }         // 아이디로 회원 찾기
 }
