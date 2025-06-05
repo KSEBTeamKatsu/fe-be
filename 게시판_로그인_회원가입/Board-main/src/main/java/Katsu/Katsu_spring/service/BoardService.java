@@ -1,5 +1,6 @@
 package Katsu.Katsu_spring.service;
 
+import Katsu.Katsu_spring.domain.Member;
 import Katsu.Katsu_spring.dto.BoardDTO;
 import Katsu.Katsu_spring.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,8 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
 
-    public void posts(BoardDTO boardDTO) {
-        boardRepository.posts(boardDTO);
+    public void posts(BoardDTO boardDTO, Member member) {
+        boardRepository.posts(boardDTO, member);
     }
 
     public List<BoardDTO> findAll(){

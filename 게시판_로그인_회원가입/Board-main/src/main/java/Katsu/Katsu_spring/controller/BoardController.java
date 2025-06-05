@@ -1,5 +1,6 @@
 package Katsu.Katsu_spring.controller;
 
+import Katsu.Katsu_spring.domain.Member;
 import Katsu.Katsu_spring.dto.BoardDTO;
 import Katsu.Katsu_spring.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,8 @@ public class BoardController {
 
     // 게시글 작성
     @PostMapping("/posts")
-    public BoardDTO createPosts(@RequestBody BoardDTO boardDTO) {
-        boardService.posts(boardDTO);
+    public BoardDTO createPosts(@RequestBody BoardDTO boardDTO, Member member) {
+        boardService.posts(boardDTO, member);
         return boardDTO;
     }
 

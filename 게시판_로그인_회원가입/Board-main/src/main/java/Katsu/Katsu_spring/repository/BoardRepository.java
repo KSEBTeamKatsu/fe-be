@@ -1,16 +1,15 @@
 package Katsu.Katsu_spring.repository;
 
+import Katsu.Katsu_spring.domain.Member;
 import Katsu.Katsu_spring.dto.BoardDTO;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-@Mapper
 public interface BoardRepository {
 
-    void posts(BoardDTO boardDTO);
+    void posts(BoardDTO boardDTO, Member member);
 
     List<BoardDTO> findAll();
 

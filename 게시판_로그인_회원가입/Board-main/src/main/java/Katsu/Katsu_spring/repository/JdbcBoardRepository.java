@@ -1,12 +1,12 @@
 package Katsu.Katsu_spring.repository;
 
+import Katsu.Katsu_spring.domain.Member;
 import Katsu.Katsu_spring.dto.BoardDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -25,18 +25,18 @@ public class JdbcBoardRepository implements BoardRepository {
         boardDTO.setUserId(rs.getString("userId"));
         boardDTO.setTitle(rs.getString("title"));
         boardDTO.setContent(rs.getString("content"));
-        boardDTO.setCreatedAt(LocalDateTime.parse(rs.getString("createdAt")));
+        boardDTO.setCreatedAt(rs.getTimestamp("createdAt").toLocalDateTime());
         boardDTO.setViewCnt(rs.getInt("viewCnt"));
         boardDTO.setLikes(rs.getInt("likes"));
         return boardDTO;
     };
 
     @Override
-    public void posts(BoardDTO boardDTO) {
+    public void posts(BoardDTO boardDTO, Member member) {
         String sql = "INSERT INTO board_table (userId, title, content, createdAt, viewCnt, likes) " +
                 "VALUES (?, ?, ?, NOW(), 0, 0)";
         jdbcTemplate.update(sql,
-                boardDTO.getUserId(),
+                member.getId(),
                 boardDTO.getTitle(),
                 boardDTO.getContent());
     }
@@ -44,7 +44,7 @@ public class JdbcBoardRepository implements BoardRepository {
     @Override
     public List<BoardDTO> findAll() {
         log.info("findAll called");
-        String sql = "SELECT postId, userId, title, content, DATE_FORMAT(createdAt, '%Y-%m-%d') as createdAt, viewCnt, likes " +
+        String sql = "SELECT postId, userId, title, content, createdAt, viewCnt, likes " +
                 "FROM board_table ORDER BY postId DESC";
         return jdbcTemplate.query(sql, boardRowMapper);
     }
@@ -59,7 +59,7 @@ public class JdbcBoardRepository implements BoardRepository {
     @Override
     public BoardDTO findById(Long postId) {
         log.info("findById");
-        String sql = "SELECT postId, userId, title, content, DATE_FORMAT(createdAt, '%Y-%m-%d') as createdAt, viewCnt, likes " +
+        String sql = "SELECT postId, userId, title, content, createdAt, viewCnt, likes " +
                 "FROM board_table WHERE postId = ?";
         return jdbcTemplate.queryForObject(sql, boardRowMapper, postId);
     }
