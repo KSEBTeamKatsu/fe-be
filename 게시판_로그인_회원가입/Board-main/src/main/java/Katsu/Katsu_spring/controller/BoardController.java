@@ -5,8 +5,12 @@ import Katsu.Katsu_spring.dto.BoardDTO;
 import Katsu.Katsu_spring.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -24,8 +28,15 @@ public class BoardController {
 
     // 게시글 작성
     @PostMapping("/posts")
-    public BoardDTO createPosts(@RequestBody BoardDTO boardDTO, Member member) {
-        boardService.posts(boardDTO, member);
+    public BoardDTO createPosts(@RequestBody BoardDTO boardDTO, Principal principal) {
+        String username = principal.getName();
+
+        log.info("작성자: {}", username);
+
+        // userId를 DB에서 username으로 찾아서 boardDTO에 넣어도 됨!
+        boardDTO.setUserId(username);
+
+        boardService.posts(boardDTO);
         return boardDTO;
     }
 

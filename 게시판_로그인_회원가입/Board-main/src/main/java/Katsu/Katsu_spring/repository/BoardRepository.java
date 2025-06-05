@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface BoardRepository {
 
-    void posts(BoardDTO boardDTO, Member member);
+    void posts(BoardDTO boardDTO);
 
     List<BoardDTO> findAll();
 

@@ -13,8 +13,8 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
 
-    public void posts(BoardDTO boardDTO, Member member) {
-        boardRepository.posts(boardDTO, member);
+    public void posts(BoardDTO boardDTO) {
+        boardRepository.posts(boardDTO);
     }
 
     public List<BoardDTO> findAll(){
@@ -25,9 +25,7 @@ public class BoardService {
         boardRepository.updateView(postId);
     }
 
-    public BoardDTO findById(Long postId){
-        return boardRepository.findById(postId);
-    }
+    public BoardDTO findById(Long postId){ return boardRepository.findById(postId); }
 
     public void update(BoardDTO boardDTO){
         boardRepository.update(boardDTO);

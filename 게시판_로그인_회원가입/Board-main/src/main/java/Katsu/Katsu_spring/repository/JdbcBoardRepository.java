@@ -32,11 +32,11 @@ public class JdbcBoardRepository implements BoardRepository {
     };
 
     @Override
-    public void posts(BoardDTO boardDTO, Member member) {
+    public void posts(BoardDTO boardDTO) {
         String sql = "INSERT INTO board_table (userId, title, content, createdAt, viewCnt, likes) " +
                 "VALUES (?, ?, ?, NOW(), 0, 0)";
         jdbcTemplate.update(sql,
-                member.getId(),
+                boardDTO.getUserId(),
                 boardDTO.getTitle(),
                 boardDTO.getContent());
     }
