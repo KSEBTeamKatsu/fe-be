@@ -22,7 +22,12 @@ public class BoardController {
 
     // 게시글 목록 조회
     @GetMapping("/posts")
-    public List<BoardDTO> getPosts(){
+    public List<BoardDTO> getPosts(Principal principal){
+        if (principal == null) {
+            log.info("세션 없음 (principal=null)");
+        } else {
+            log.info("세션 있음! 사용자: {}", principal.getName());
+        }
         return boardService.findAll();
     }
 
