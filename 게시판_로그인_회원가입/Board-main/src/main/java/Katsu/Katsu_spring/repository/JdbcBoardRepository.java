@@ -2,6 +2,7 @@ package Katsu.Katsu_spring.repository;
 
 import Katsu.Katsu_spring.domain.Member;
 import Katsu.Katsu_spring.dto.BoardDTO;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -32,11 +33,11 @@ public class JdbcBoardRepository implements BoardRepository {
     };
 
     @Override
-    public void posts(BoardDTO boardDTO) {
+    public void posts(BoardDTO boardDTO, HttpSession session) {
         String sql = "INSERT INTO board_table (userId, title, content, createdAt, viewCnt, likes) " +
                 "VALUES (?, ?, ?, NOW(), 0, 0)";
         jdbcTemplate.update(sql,
-                boardDTO.getUserId(),
+                session.getAttribute("user"),
                 boardDTO.getTitle(),
                 boardDTO.getContent());
     }

@@ -2,6 +2,7 @@ package Katsu.Katsu_spring.repository;
 
 import Katsu.Katsu_spring.domain.Member;
 import Katsu.Katsu_spring.dto.BoardDTO;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 @Repository
 public interface BoardRepository {
 
-    void posts(BoardDTO boardDTO);
+    void posts(BoardDTO boardDTO, HttpSession session);
 
     List<BoardDTO> findAll();
 

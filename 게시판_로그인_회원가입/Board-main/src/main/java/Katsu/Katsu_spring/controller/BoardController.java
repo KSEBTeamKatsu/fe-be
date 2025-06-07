@@ -3,6 +3,7 @@ package Katsu.Katsu_spring.controller;
 import Katsu.Katsu_spring.domain.Member;
 import Katsu.Katsu_spring.dto.BoardDTO;
 import Katsu.Katsu_spring.service.BoardService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,26 +23,23 @@ public class BoardController {
 
     // 게시글 목록 조회
     @GetMapping("/posts")
-    public List<BoardDTO> getPosts(Principal principal){
-        if (principal == null) {
-            log.info("세션 없음 (principal=null)");
+    public List<BoardDTO> getPosts(HttpSession session){
+        Object user = session.getAttribute("user");
+        if (user == null) {
+            log.info("세션 없음 (user == null)");
         } else {
-            log.info("세션 있음! 사용자: {}", principal.getName());
+            log.info("세션 있음! 사용자: {}", user);
         }
         return boardService.findAll();
     }
 
     // 게시글 작성
     @PostMapping("/posts")
-    public BoardDTO createPosts(@RequestBody BoardDTO boardDTO, Principal principal) {
-        String username = principal.getName();
+    public BoardDTO createPosts(@RequestBody BoardDTO boardDTO, HttpSession session) {
+        Object user = session.getAttribute("user");
+        log.info("작성자: {}", user);
 
-        log.info("작성자: {}", username);
-
-        // userId를 DB에서 username으로 찾아서 boardDTO에 넣어도 됨!
-        boardDTO.setUserId(username);
-
-        boardService.posts(boardDTO);
+        boardService.posts(boardDTO, session);
         return boardDTO;
     }
 

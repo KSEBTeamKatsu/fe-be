@@ -40,7 +40,7 @@ public class SecurityConfig {
                 )
                 .csrf(AbstractHttpConfigurer::disable) // CSRF 보호 끔 (폼 테스트용일 때)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/css/**", "/api/login", "/api/register").permitAll() // 여기서 /posts 허용 해제
+                        .requestMatchers("/", "/api/**", "/css/**", "/api/login", "/api/register", "/api/session-check").permitAll() // 여기서 /posts 허용 해제
                         .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable);
